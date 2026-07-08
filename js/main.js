@@ -16,9 +16,13 @@ const CONFIG = {
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function openCalendlyPopup(url) {
-  if (typeof Calendly !== 'undefined' && Calendly.initPopupWidget) {
-    Calendly.initPopupWidget({ url });
-    return;
+  try {
+    if (typeof Calendly !== 'undefined' && typeof Calendly.initPopupWidget === 'function') {
+      Calendly.initPopupWidget({ url });
+      return;
+    }
+  } catch (error) {
+    // Fallback keeps booking working even if Calendly popup script errors.
   }
   window.open(url, '_blank', 'noopener,noreferrer');
 }
@@ -29,6 +33,8 @@ function initCalendly() {
 
   document.querySelectorAll('[data-calendly]').forEach((el) => {
     el.href = url;
+    el.setAttribute('target', '_blank');
+    el.setAttribute('rel', 'noopener noreferrer');
     el.addEventListener('click', (e) => {
       e.preventDefault();
       openCalendlyPopup(url);
