@@ -2,37 +2,37 @@
  * EastKode Landing Page — main.js
  *
  * PLACEHOLDERS TO UPDATE BEFORE GO-LIVE:
- * 1. COUNTRYCODE + PHONENUMBER — Replace with real WhatsApp number (e.g. '91' + '9876543210')
- * 2. contactFormEndpoint — Replace with Formspree URL or backend endpoint
- * 3. analyticsId — Add GA4 / Plausible tracking ID when ready
- * 4. Social profile hrefs in index.html footer — replace placeholder "#" links
- * 5. Privacy Policy / Terms hrefs — replace when pages exist
+ * 1. calendlyUrl — Discovery call booking link (Calendly)
+ * 2. analyticsId — Add GA4 / Plausible tracking ID when ready
+ * 3. Social profile hrefs in index.html footer — replace placeholder "#" links
  */
 
-const COUNTRYCODE = '[COUNTRYCODE]';
-const PHONENUMBER = '[PHONENUMBER]';
-
 const CONFIG = {
-  whatsappNumber: `${COUNTRYCODE}${PHONENUMBER}`,
-  whatsappMessage: "Hi EastKode, I'd like to know more about automating my business",
-  contactFormEndpoint: '[FORM_ENDPOINT]',
+  calendlyUrl: 'https://calendly.com/manasranjanbisi/30min',
   analyticsId: '[ANALYTICS_ID]',
   siteUrl: 'https://eastkode.in',
 };
 
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function buildWhatsAppUrl() {
-  const text = encodeURIComponent(CONFIG.whatsappMessage);
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${text}`;
+function openCalendlyPopup(url) {
+  if (typeof Calendly !== 'undefined' && Calendly.initPopupWidget) {
+    Calendly.initPopupWidget({ url });
+    return;
+  }
+  window.open(url, '_blank', 'noopener,noreferrer');
 }
 
-function initWhatsAppLinks() {
-  const url = buildWhatsAppUrl();
-  document.querySelectorAll('[data-whatsapp]').forEach((el) => {
+function initCalendly() {
+  const url = CONFIG.calendlyUrl;
+  if (!url) return;
+
+  document.querySelectorAll('[data-calendly]').forEach((el) => {
     el.href = url;
-    el.setAttribute('target', '_blank');
-    el.setAttribute('rel', 'noopener noreferrer');
+    el.addEventListener('click', (e) => {
+      e.preventDefault();
+      openCalendlyPopup(url);
+    });
   });
 }
 
@@ -253,55 +253,10 @@ function initScrollReveal() {
   revealElements.forEach((el) => observer.observe(el));
 }
 
-function initWhatsAppFloat() {
-  const tooltip = document.getElementById('whatsapp-tooltip');
-  if (!tooltip) return;
-
-  const isMobile = window.innerWidth < 640;
-  if (isMobile || prefersReducedMotion) return;
-
-  let dismissed = false;
-
-  function dismissTooltip() {
-    if (dismissed) return;
-    dismissed = true;
-    tooltip.classList.remove('is-visible');
-  }
-
-  const showTimer = setTimeout(() => {
-    if (!dismissed) tooltip.classList.add('is-visible');
-  }, 2000);
-
-  const hideTimer = setTimeout(dismissTooltip, 7000);
-
-  document.getElementById('whatsapp-float')?.addEventListener('click', () => {
-    clearTimeout(showTimer);
-    clearTimeout(hideTimer);
-    dismissTooltip();
-  });
-
-  window.addEventListener('scroll', () => {
-    clearTimeout(showTimer);
-    clearTimeout(hideTimer);
-    dismissTooltip();
-  }, { once: true, passive: true });
-}
-
 function initFooterYear() {
   const yearEl = document.getElementById('footer-year');
   if (yearEl) {
     yearEl.textContent = new Date().getFullYear();
-  }
-}
-
-function initContactForm() {
-  const form = document.getElementById('contact-form');
-  if (!form) return;
-
-  if (CONFIG.contactFormEndpoint && CONFIG.contactFormEndpoint !== '[FORM_ENDPOINT]') {
-    form.action = CONFIG.contactFormEndpoint;
-    form.method = 'POST';
-    form.removeAttribute('enctype');
   }
 }
 
@@ -311,15 +266,13 @@ function initAnalytics() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  initWhatsAppLinks();
+  initCalendly();
   initHeaderScroll();
   initMobileNav();
   initSmoothScroll();
   initFaqAccordion();
   initMetricsCounters();
   initScrollReveal();
-  initWhatsAppFloat();
   initFooterYear();
-  initContactForm();
   initAnalytics();
 });
