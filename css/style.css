@@ -1557,6 +1557,23 @@ h4 {
   margin-bottom: var(--space-4);
 }
 
+.footer-legal-links {
+  margin-top: var(--space-4);
+}
+
+.footer-legal-links li {
+  margin-bottom: var(--space-2);
+}
+
+.footer-legal-links a {
+  font-size: var(--fs-small);
+  color: var(--color-text-on-dark-muted);
+}
+
+.footer-legal-links a:hover {
+  color: var(--color-primary);
+}
+
 .footer-bottom {
   display: flex;
   flex-direction: column;
@@ -1623,6 +1640,42 @@ h4 {
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-sm);
   padding: var(--space-7);
+}
+
+.legal-breadcrumb {
+  margin-bottom: var(--space-4);
+}
+
+.legal-breadcrumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+}
+
+.legal-breadcrumb li:not(:last-child)::after {
+  content: "/";
+  margin-left: var(--space-2);
+  color: var(--color-border);
+}
+
+.legal-breadcrumb a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.legal-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.legal-breadcrumb [aria-current="page"] {
+  color: var(--color-text);
+  font-weight: 500;
 }
 
 .legal-meta {

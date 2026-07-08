@@ -1,4 +1,8 @@
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://eastkode.in/sitemap.xml
+
+# Host preference for crawlers that support it
+Host: https://eastkode.in
