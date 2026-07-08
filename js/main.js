@@ -3,13 +3,14 @@
  *
  * PLACEHOLDERS TO UPDATE BEFORE GO-LIVE:
  * 1. calendlyUrl — Discovery call booking link (Calendly)
- * 2. analyticsId — Add GA4 / Plausible tracking ID when ready
- * 3. Social profile hrefs in index.html footer — replace placeholder "#" links
+ * 2. Social profile hrefs in index.html footer — replace placeholder "#" links
+ *
+ * Analytics: GA4 (gtag.js) is loaded in each HTML <head> with ID G-KLFS5Y1CGX
  */
 
 const CONFIG = {
   calendlyUrl: 'https://calendly.com/manasranjanbisi/30min',
-  analyticsId: '[ANALYTICS_ID]',
+  analyticsId: 'G-KLFS5Y1CGX',
   siteUrl: 'https://eastkode.in',
 };
 
@@ -250,11 +251,6 @@ function initFooterYear() {
   }
 }
 
-function initAnalytics() {
-  if (!CONFIG.analyticsId || CONFIG.analyticsId === '[ANALYTICS_ID]') return;
-  // PLACEHOLDER: Add GA4 or Plausible snippet here when analyticsId is set
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   initCalendly();
   initHeaderScroll();
@@ -264,5 +260,4 @@ document.addEventListener('DOMContentLoaded', () => {
   initMetricsCounters();
   initScrollReveal();
   initFooterYear();
-  initAnalytics();
 });
